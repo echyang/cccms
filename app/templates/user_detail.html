@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<ul class="breadcrumb">
+	<li><a href="/">首页</a><span class="divider">/</span></li>
+	<li><a href="{{ url_for(setting.url) }}">用户</a><span class="divider">/</span></li>
+	<li class="active">查看</li>
+</ul>
+
+<h2>用户<small>查看</small></h2>
+	<ul>
+		<li>
+			<label for="group_id">用户组:</label>
+			<span>{{ user.group.name }}</span>
+		</li>
+		<li>
+			<label for="username">用户名:</label>
+			<span>{{ user.username }}</span>
+		</li>
+		<li>
+			<label for="email">邮箱:</label>
+			<span>{{ user.email }}</span>
+		</li>
+		<li>
+			<label for="is_active">是否可用:</label>
+			<span>{{ user.is_active }}</span>
+		</li>
+	</ul>
+
+	<input name="submit" type="submit" value="添加" />
+</form>
+{% endblock %}

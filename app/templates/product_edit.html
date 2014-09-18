@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{%block script %}
+<script type="text/javascript" src="/static/js/ajaxupload.js"></script>
+<script type="text/javascript" src="/static/js/form.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<ul class="breadcrumb">
+	<li><a href="/">首页</a><span class="divider">/</span></li>
+	<li><a href="{{ url_for(setting.url) }}">产品</a><span class="divider">/</span></li>
+	<li class="active">修改</li>
+</ul>
+
+<h1>产品<small>修改</small></h1>
+<form class="form-horizontal" name="{{ setting.url }}" action="{{ url_for(setting.url+'_edit', id=product.id) }}" method="post">
+	<input name="id" type="hidden" value="{{ product.id }}" />
+	<div class="control-group">
+		<label for="product_class_id" class=" control-label">分类名称:</label>
+		<div class=" controls">
+			<select name="product_class_id">
+				{% for product_class in product_classes %}
+				<option value="{{ product_class.id }}"{% if product_class.name == product.product_class.name %} selected="selected"{% endif %}>{{ product_class.name }}</option>
+				{% endfor %}
+			</select>
+		</div>
+	</div>
+	<div class="control-group">
+		<label for="name" class=" control-label">名称:</label>
+		<div class=" controls">
+			<input name="name" type="text" value="{{ product.name }}" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label for="keywords" class=" control-label">关键词:</label>
+		<div class=" controls">
+			<input name="keywords" type="text" value="{{ product.keywords }}" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label for="description" class=" control-label">注释:</label>
+		<div class=" controls">
+			<textarea name="description">{{ product.description }}</textarea>
+		</div>
+	</div>
+	<div class="control-group">
+		<label for="posi" class=" control-label">排序:</label>
+		<div class=" controls">
+			<input name="posi" type="text" value="{{ product.posi }}" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label for="picture" class=" control-label">图片:</label>
+		<div class=" controls">
+			<input name="picture" type="text" value="{{ product.picture }}" />
+			<input id="img_upload" name="img_upload" class="btn" type="button" value="浏览" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label for="content" class=" control-label">内容:</label>
+		<div class=" controls">
+			<textarea name="content" class="article">{{ product.content }}</textarea>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class=" controls">
+			<input name="submit" class="btn btn-primary" type="submit" value="修改" />
+		</div>
+	</div>
+</form>
+{% endblock %}

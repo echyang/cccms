@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>登录成功</h1>
+<ul>
+	<li>{{ user.id }}</li>
+	<li>{{ user.username }}</li>
+	<li>{{ user.group.name }}</li>
+	<li>{{ user.email }}</li>
+	<li>{{ user.update_at }}</li>
+	<li>{{ user.create_at }}</li>
+	<li>{{ user.group.id }}</li>
+	<li>{{ user.group.name }}</li>
+</ul>
+{% endblock %}

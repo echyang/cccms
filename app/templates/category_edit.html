@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{%block script %}
+<script type="text/javascript" src="/static/js/ajaxupload.js"></script>
+<script type="text/javascript" src="/static/js/form.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<ul class="breadcrumb">
+	<li><a href="/">首页</a><span class="divider">/</span></li>
+	<li><a href="{{ url_for(setting.url) }}">分类</a><span class="divider">/</span></li>
+	<li class="active">修改</li>
+</ul>
+
+<h2>分类<small>修改</small></h2>
+
+<form class="form-horizontal" name="{{ setting.url }}_class_edit" action="{{ url_for(setting.url+'_edit', id=category.id) }}" method="post">
+	<input name="id" type="hidden" value="{{ category.id }}" />
+	<div class="control-group">
+		<label for="parent_id" class="control-label"><em>*</em>分类名称:</label>
+		<div class="controls">
+			<select name="parent_id">
+				{% for p_category in categories %}
+				<option value="{{ p_category.id }}"{% if p_category.id==o_row.id %} selected="selected"{% endif %}>{{ p_category.layer and '|'+'_'*(p_category.layer)+' ' or '' }}{{ p_category.title}}</option>
+				{% endfor %}
+			</select>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class=" control-label">位置:</label>
+		<div class=" controls">
+			<label class="radio inline"><input name="pos" type="radio" value="first_child"{% if category.layer==o_row.layer+1 %} checked="checked"{% endif %} />下级头部</label>
+			<label class="radio inline"><input name="pos" type="radio" value="last_child" />下级尾部</label>
+			<label class="radio inline"><input name="pos" type="radio" value="previous_sibling" />同级前一个</label>
+			<label class="radio inline"><input name="pos" type="radio" value="next_sibling"{% if category.layer==o_row.layer %} checked="checked"{% endif %} />同级后一个</label>
+			</li>
+		</div>
+	</div>
+	<div class="control-group">
+		<label for="title" class=" control-label">名称:</label>
+		<div class=" controls">
+			<input name="title" type="text" value="{{ category.title }}" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label for="keywords" class=" control-label">关键词:</label>
+		<div class=" controls">
+			<input name="keywords" type="text" value="{{ category.keywords }}" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label for="description" class=" control-label">注释:</label>
+		<div class=" controls">
+			<textarea name="description">{{ category.description }}</textarea>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class=" controls">
+			<input name="submit" class="btn btn-primary" type="submit" value="修改" />
+		</div>
+	</div>
+</form>
+{% endblock %}

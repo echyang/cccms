@@ -1,0 +1,9 @@
+body { margin-top:70px; }
+textarea.article { width:660px; height:300px; }
+.form-horizontal .control-group em {color:#F00; margin:0 10px; font-weight:bold;}
+.form-horizontal .control-group .msg  {color:#F00; margin:0 10px; }
+
+.sidebar-nav { padding:9px 0; }
+
+.footer { text-align:center; padding:30px 0; margin-top:70px; border-top:1px solid #e5e5e5; background-color:#f5f5f5; }
+.footer p { margin-bottom:0; color:#777; }

@@ -1,0 +1,11 @@
+{% with msgs= get_flashed_messages() %}
+{% if msgs %}
+<div class="alert">
+	<button type="button" class="close" data-dismiss="alert">&times;</button>
+	<strong>操作成功</strong>
+{% for msg in msgs %}
+{{ msg | safe }}
+{% endfor %}
+</div>
+{% endif %}
+{% endwith %}

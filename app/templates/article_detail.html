@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>文章列表<small>查看</small></h2>
+	<ul>
+		<li>
+			<label for="article_class_id">分类名称:</label>
+			{{ article.article_class.name }}
+			<span class="error"></span>
+		</li>
+		<li>
+			<label for="title">标题:</label>
+			{{ article.title }}
+			<span class="error"></span>
+		</li>
+		<li>
+			<label for="keywords">关键词:</label>
+			{{ article.keywords }}
+			<span class="error"></span>
+		</li>
+		<li>
+			<label for="description">注释:</label>
+			{{ article.description }}
+			<span class="error"></span>
+		</li>
+		<li>
+			<label for="picture">图片:</label>
+			<img src="{{ article.picture }}" />
+			<span class="error"></span>
+		</li>
+		<li>
+			<label for="content">内容:</label>
+			{{ article.content|safe }}
+			<span class="error"></span>
+		</li>
+	</ul>
+{% endblock %}
