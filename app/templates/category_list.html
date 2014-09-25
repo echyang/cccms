@@ -15,6 +15,7 @@
 <thead>
 <tr>
 <th>编号</th>
+<th>模型</th>
 <th>名称</th>
 <th>创建时间</th>
 <th>修改时间</th>
@@ -26,6 +27,7 @@
 {% for category in categories %}
 <tr>
 <td>{{ category.id }}</td>
+<td>{{ category.data_model.name }}</td>
 <td>{{ category.layer-1 and ' '*(category.layer-1)+'|_ ' or ''}}{{ category.title }}</td>
 <td>{{ category.create_at }}</td>
 <td>{{ category.update_at }}</td>

@@ -413,7 +413,8 @@ def category_add():
 				models.Category.query.filter(models.Category.rgt>pos).update({models.Category.rgt:models.Category.rgt+2})
 				db.session.commit()
 
-				category = models.Category(lft, rgt, layer, request.form['title'], request.form['keywords'], request.form['description'], '', '')		
+				data_model = models.Data_model.query.get(request.form['data_model_id'])
+				category = models.Category(lft, rgt, layer, request.form['title'], data_model, request.form['keywords'], request.form['description'], '', '')		
 				db.session.add(category)
 				db.session.commit()
 
@@ -421,7 +422,8 @@ def category_add():
 				return redirect(url_for('category'))
 		
 	categories = models.Category.query.order_by('lft ASC').all()
-	return render_template('category_add.html', setting=setting, categories=categories,  error=error)
+	data_model = models.Data_model.query.order_by('id ASC').all()
+	return render_template('category_add.html', setting=setting, categories=categories, data_model=data_model, error=error)
 
 
 @app.route('/category/edit/<int:id>', methods=['GET', 'POST'])
@@ -484,7 +486,9 @@ def category_edit(id=0):
 			#移动到新的位置
 			models.Category.query.filter(and_(models.Category.lft<0, models.Category.rgt<0)).update({models.Category.lft:models.Category.lft+rgt-lft+2+o_pos, models.Category.rgt:models.Category.rgt+rgt-lft+2+o_pos, models.Category.layer:models.Category.layer+o_layer-layer})
 		#更新
+		data_model = models.Data_model.query.get(request.form['data_model_id'])
 		category.title = request.form['title']
+		category.data_model = models.Data_model.query.get(request.form['data_model_id'])
 		category.keywords = request.form['keywords']
 		category.description = request.form['description']
 		#category.picture = request.form['picture']
@@ -495,7 +499,8 @@ def category_edit(id=0):
 		return redirect(url_for('category'))
 	
 	categories = models.Category.query.filter(or_(models.Category.lft<category.lft, models.Category.rgt>category.rgt)).order_by('lft ASC').all()
-	return render_template('category_edit.html', setting=setting, error=error, category=category, categories=categories, o_row=o_row)
+	data_model = models.Data_model.query.order_by('id ASC').all()
+	return render_template('category_edit.html', setting=setting, error=error, category=category, categories=categories, data_model=data_model, o_row=o_row)
 
 
 @app.route('/category/delete/<int:id>')
@@ -512,79 +517,10 @@ def category_delete(id=0):
 	return redirect(url_for('category'))
 
 
-@app.route('/article_class')
-@login_required
-def article_class():
-	setting = {'url':'article_class'}
-	article_classes = models.Article_class.query.order_by('article_class.posi ASC, posi ASC').all()
-	return render_template('article_class_list.html', setting=setting, article_classes=article_classes)
-
-
-@app.route('/article_class/add', methods=['GET', 'POST'])
-@login_required
-def article_class_add():
-	setting = {'url':'article_class'}
-	error = {} 
-	if request.method == 'POST':
-		stat = True
-		if not request.form['name']:
-			error['name'] = ['名称不能为空']
-			stat = False
-		elif models.Article_class.query.filter_by(name=request.form['name']).first():
-			error['name'] = ['用户已经存在.']
-			stat = False
-		if stat:
-			article_class = models.Article_class(request.form['name'], request.form['keywords'], request.form['description'], request.form['posi'], request.form['parent_id'])		
-			db.session.add(article_class)
-			db.session.commit()
-			flash('添加文章分类"%s"成功' % request.form['name'])
-			return redirect(url_for('article_class'))
-		
-	article_classes = models.Article_class.query.filter_by(parent_id=0).order_by('posi ASC').all()
-	return render_template('article_class_add.html', setting=setting, article_classes=article_classes,  error=error)
-
-
-@app.route('/article_class/edit/<int:id>', methods=['GET', 'POST'])
-@login_required
-def article_class_edit(id=0):
-	setting = {'url':'article_class'}
-	error = {} 
-	article_class = models.Article_class.query.get_or_404(id)
-	if request.method == 'POST':
-		stat = True
-		if not request.form['name']:
-			error['name'] = ['文章分类不能为空']
-			stat = False
-		elif models.Article_class.query.filter(models.Article_class.id!=id).filter_by(name=request.form['name']).first():
-			error['name'] = ['文章分类已经存在']
-			stat = False
-		if stat:
-			article_class.name = request.form['name']
-			article_class.parent = models.Article_class.query.get(request.form['parent_id'])
-			article_class.keywords = request.form['keywords']
-			article_class.description = request.form['description']
-			article_class.posi = request.form['posi']
-			article_class.update_at = datetime.utcnow()
-			db.session.add(article_class)
-			db.session.commit()
-			flash('添加文章分类"%s"成功' % request.form['name'])
-			return redirect(url_for('article_class'))
-	
-	if article_class.parent_id == 0:
-		article_classes = models.Article_class.query.filter_by(parent_id=-1).order_by('posi ASC').all()
-	else:
-		article_classes = models.Article_class.query.filter_by(parent_id=0).order_by('posi ASC').all()
-	return render_template('article_class_edit.html', setting=setting, error=error, article_class=article_class, article_classes=article_classes)
-
-
-@app.route('/article_class/delete/<int:id>')
-@login_required
-def article_class_delete(id=0):
-	article_class = models.Article_class.query.get_or_404(id)
-	flash('修改文章分类"%s"成功' % article_class.name)
-	db.session.delete(article_class)
-	db.session.commit()
-	return redirect(url_for('article_class'))
+@app.route('/admin/content')
+def content():
+	categories = models.Category.query.filter(models.Category.layer>0).order_by('lft ASC ').all()
+	return render_template('content.html', sidebar_categories=categories)
 
 
 @app.route('/article', methods=['GET',])
@@ -690,75 +626,6 @@ def article_delete(id):
 					db.session.delete(article)
 					db.session.commit()
 	return redirect(url_for('article'))
-
-
-@app.route('/product_class')
-@login_required
-def product_class():
-	setting = {'url':'product_class'}
-	product_classes = models.Product_class.query.order_by('create_at ASC').all()
-	return render_template('product_class_list.html', setting=setting, product_classes=product_classes)
-
-
-@app.route('/product_class/add', methods=['GET', 'POST'])
-@login_required
-def product_class_add():
-	setting = {'url':'product_class'}
-	error = {} 
-	if request.method == 'POST':
-		stat = True
-		if not request.form['name']:
-			error['name'] = ['名称不能为空']
-			stat = False
-		elif models.Product_class.query.filter_by(name=request.form['name']).first():
-			error['name'] = ['名称已经存在']
-			stat = False
-		if stat:
-			product_class = models.Product_class(request.form['name'], request.form['keywords'], request.form['description'], request.form['posi'])		
-			db.session.add(product_class)
-			db.session.commit()
-			flash('添加产品分类" %s "成功' % request.form['name'])
-			return redirect(url_for('product_class'))
-		
-	return render_template('product_class_add.html', setting=setting, error=error)
-
-
-@app.route('/product_class/edit/<int:id>', methods=['GET', 'POST'])
-@login_required
-def product_class_edit(id=0):
-	setting = {'url':'product_class'}
-	error = {} 
-	product_class = models.Product_class.query.get_or_404(id)
-	if request.method == 'POST':
-		stat = True
-		if not request.form['name']:
-			error['name'] = ['标题不能为空']
-			stat = False
-		elif models.Product_class.query.filter(models.Product_class.id!=id).filter_by(name=request.form['name']).first():
-			error['name'] = ['标题已经存在']
-			stat = False
-		if stat:
-			product_class.name = request.form['name']
-			product_class.keywords = request.form['keywords']
-			product_class.description = request.form['description']
-			product_class.posi = request.form['posi']
-			product_class.update_at = datetime.utcnow()
-			db.session.add(product_class)
-			db.session.commit()
-			flash('添加产品分类" %s "成功' % request.form['name'])
-			return redirect(url_for('product_class'))
-		
-	return render_template('product_class_edit.html', setting=setting, error=error, product_class=product_class)
-
-
-@app.route('/product_class/delete/<int:id>')
-@login_required
-def product_class_delete(id=0):
-	product_class = models.Product_class.query.get_or_404(id)
-	flash('修改产品" %s "成功' % product_class.name)
-	db.session.delete(product_class)
-	db.session.commit()
-	return redirect(url_for('product_class'))
 
 
 @app.route('/product')

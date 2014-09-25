@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}    
+<div class="span4">
+	{% set layer=1 %}
+	{% set i = 0 %}   
+	{% set level = 0 %}
+
+	<ul id="category">
+	{% for category in sidebar_categories %}
+		{% if i and  category.layer <= layer %}
+		</li>
+		{% endif %}
+		
+		{% if category.layer < layer %}
+			{% for j in range(layer-category.layer) %}
+					</li>
+				</ul>
+				{% set level = level-1 %}
+			{% endfor %}
+		{% endif %}
+		<li><a href="/{{ category.data_model.code }}/cid/{{category.id}}">{{ category.title }}</a>
+		{% if category.lft+1 < category.rgt %}
+		<ul>
+			{% set level = level+1 %}
+		{% endif %}
+
+		{% set layer = category.layer %}
+		{% set i=i+1 %}
+	{% endfor %}
+
+
+	{% if level %}
+		{% for j in range(level) %}
+			</li>
+		</ul>
+		{% endfor %}
+	{% endif %}
+
+	</ul>
+</div>
+<div class="span8">
+	测试
+</div>
+{% endblock %}

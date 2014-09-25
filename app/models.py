@@ -271,6 +271,7 @@ class Category(db.Model):
 	lft = db.Column(db.Integer)
 	rgt = db.Column(db.Integer)
 	layer = db.Column(db.Integer)
+	data_model_id = db.Column(db.Integer, db.ForeignKey('data_model.id'))
 	title = db.Column(db.String(64), index = True, unique = True)
 	keywords = db.Column(db.String(160))
 	description = db.Column(db.String(500))
@@ -278,11 +279,13 @@ class Category(db.Model):
 	content = db.Column(db.Text)
 	create_at = db.Column(db.DateTime)
 	update_at = db.Column(db.DateTime)
+	data_model = db.relationship('Data_model', backref = db.backref('data_model', lazy = 'dynamic'))
 
-	def __init__(self, lft, rgt, layer, title, keywords=None, description=None, picture=None, content=None, status=1):
+	def __init__(self, lft, rgt, layer, data_model, title, keywords=None, description=None, picture=None, content=None, status=1):
 		self.lft = lft
 		self.rgt = rgt
 		self.layer = layer
+		self.data_model = data_model 
 		self.title = title
 		self.keywords = keywords
 		self.description = description

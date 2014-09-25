@@ -28,6 +28,16 @@
 		</div>
 	</div>
 	<div class="control-group">
+		<label for="data_model_id" class="control-label"><em>*</em>模型:</label>
+		<div class="controls">
+			<select name="data_model_id">
+				{% for data_model_item in data_model %}
+				<option value="{{ data_model_item.id }}"{% if data_model_item.id==category.data_model_id %} selected="selected"{% endif %}>{{ data_model_item.name}}</option>
+				{% endfor %}
+			</select>
+		</div>
+	</div>
+	<div class="control-group">
 		<label class=" control-label">位置:</label>
 		<div class=" controls">
 			<label class="radio inline"><input name="pos" type="radio" value="first_child"{% if category.layer==o_row.layer+1 %} checked="checked"{% endif %} />下级头部</label>
