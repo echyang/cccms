@@ -281,12 +281,12 @@ class Category(db.Model):
 	update_at = db.Column(db.DateTime)
 	data_model = db.relationship('Data_model', backref = db.backref('data_model', lazy = 'dynamic'))
 
-	def __init__(self, lft, rgt, layer, data_model, title, keywords=None, description=None, picture=None, content=None, status=1):
+	def __init__(self, lft, rgt, layer, title, data_model, keywords=None, description=None, picture=None, content=None, status=1):
 		self.lft = lft
 		self.rgt = rgt
 		self.layer = layer
-		self.data_model = data_model 
 		self.title = title
+		self.data_model = data_model 
 		self.keywords = keywords
 		self.description = description
 		self.picture = picture 
