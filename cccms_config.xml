@@ -1,9 +1,0 @@
-<uwsgi>
-	<pythonpath>/root/code/cccms/project/</pythonpath>
-	<module>cccms</module>
-	<callable></callable>
-	<socket>/tmp/uwsgi.sock</socket>
-	<master />
-	<processes>4</processes>
-	<memory-report/>
-</uwsgi>
