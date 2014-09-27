@@ -46,30 +46,6 @@ class User(db.Model):
 		return '<User %r>' % (self.nickname)
 		
 
-class Article_class(db.Model):
-	id = db.Column(db.Integer, primary_key = True)
-	parent_id = db.Column(db.Integer, db.ForeignKey('article_class.id'))
-	name = db.Column(db.String(64), index = True, unique = True)
-	keywords = db.Column(db.String(160))
-	description = db.Column(db.String(500))
-	posi = db.Column(db.Integer)
-	create_at = db.Column(db.DateTime)
-	update_at = db.Column(db.DateTime)
-	parent = db.relationship('Article_class', backref = db.backref('parent_article_class'), remote_side=[id])
-
-	def __init__(self, name, keywords=None, description=None, posi=0, parent_id=0):
-		self.parent_id = parent_id 
-		self.name = name
-		self.keywords = keywords
-		self.description = description
-		self.posi = posi 
-		self.create_at = datetime.utcnow()
-		self.update_at = datetime.utcnow()
-
-	def __repr__(self):
-		return '<Article Class %r>' % (self.name)
-
-
 class Article(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	keywords = db.Column(db.String(160))
@@ -82,14 +58,14 @@ class Article(db.Model):
 	create_at = db.Column(db.DateTime)
 	update_at = db.Column(db.DateTime)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-	article_class_id = db.Column(db.Integer, db.ForeignKey('article_class.id'))
-	article_class = db.relationship('Article_class', backref = db.backref('article_class', lazy = 'dynamic'))
+	category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+	category = db.relationship('Category', backref = db.backref('article_category', lazy = 'dynamic'))
 
-	def __init__(self, article_class, title, content, picture=None, keywords=None, description=None, posi=0):
+	def __init__(self, category, title, content, picture=None, keywords=None, description=None, posi=0):
 		self.title = title
 		self.picture = picture
 		self.content = content 
-		self.article_class = article_class 
+		self.category = category 
 		self.keywords = keywords
 		self.description = description
 		self.posi = posi 
@@ -98,28 +74,6 @@ class Article(db.Model):
 
 	def __repr__(self):
 		return '<Article %r>' % (self.title)
-
-
-class Product_class(db.Model):
-	id = db.Column(db.Integer, primary_key = True)
-	name = db.Column(db.String(64), index = True, unique = True)
-	keywords = db.Column(db.String(160))
-	description = db.Column(db.String(300))
-	posi = db.Column(db.Integer)
-	create_at = db.Column(db.DateTime)
-	create_at = db.Column(db.DateTime)
-	update_at = db.Column(db.DateTime)
-
-	def __init__(self, name, keywords=None, description=None, posi=0):
-		self.name = name
-		self.keywords = keywords
-		self.description = description
-		self.posi = posi 
-		self.create_at = datetime.utcnow()
-		self.update_at = datetime.utcnow()
-
-	def __repr__(self):
-		return '<Product Class %r>' % (self.name)
 
 
 class Product(db.Model):
@@ -134,15 +88,15 @@ class Product(db.Model):
 	create_at = db.Column(db.DateTime)
 	update_at = db.Column(db.DateTime)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-	product_class_id = db.Column(db.Integer, db.ForeignKey('product_class.id'))
-	product_class = db.relationship('Product_class', backref = db.backref('product_class', lazy = 'dynamic'))
+	category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+	category = db.relationship('Category', backref = db.backref('prodcut_category', lazy = 'dynamic'))
 	
-	def __init__(self, product_class, name, title, content, picture=None, keywords=None, description=None, posi=0):
+	def __init__(self, category, name, title, content, picture=None, keywords=None, description=None, posi=0):
 		self.name = name
 		self.title = title
 		self.picture = picture
 		self.content = content 
-		self.product_class = product_class 
+		self.category = category 
 		self.keywords = keywords
 		self.description = description
 		self.posi = posi 
@@ -183,28 +137,6 @@ class Product_picture(db.Model):
 		return '<Product Pictures %r>' % (self.title)
 
 
-class Picture_class(db.Model):
-	id = db.Column(db.Integer, primary_key = True)
-	name = db.Column(db.String(64), index = True, unique = True)
-	keywords = db.Column(db.String(160))
-	description = db.Column(db.String(500))
-	posi = db.Column(db.Integer)
-	create_at = db.Column(db.DateTime)
-	create_at = db.Column(db.DateTime)
-	update_at = db.Column(db.DateTime)
-
-	def __init__(self, name, keywords=None, description=None, posi=0):
-		self.name = name
-		self.keywords = keywords
-		self.description = description
-		self.posi = posi 
-		self.create_at = datetime.utcnow()
-		self.update_at = datetime.utcnow()
-
-	def __repr__(self):
-		return '<Picture Class %r>' % (self.name)
-
-
 class Picture(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	keywords = db.Column(db.String(160))
@@ -217,14 +149,14 @@ class Picture(db.Model):
 	create_at = db.Column(db.DateTime)
 	update_at = db.Column(db.DateTime)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-	picture_class_id = db.Column(db.Integer, db.ForeignKey('picture_class.id'))
-	picture_class = db.relationship('Picture_class', backref = db.backref('picture_class', lazy = 'dynamic'))
+	category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+	category = db.relationship('Category', backref = db.backref('picture_category', lazy = 'dynamic'))
 
-	def __init__(self, picture_class, title, content, picture=None, keywords=None, description=None, posi=0):
+	def __init__(self, category, title, content, picture=None, keywords=None, description=None, posi=0):
 		self.title = title
 		self.picture = picture
 		self.content = content 
-		self.picture_class = picture_class 
+		self.category = category 
 		self.keywords = keywords
 		self.description = description
 		self.posi = posi 

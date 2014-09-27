@@ -18,11 +18,11 @@
 <form class="form-horizontal" name="{{ setting.url }}_edit" action="{{ url_for(setting.url+'_edit', id=article.id) }}" method="post">
 	<input name="id" type="hidden" value="{{ article.id }}" />
 	<div class="control-group">
-		<label for="article_class_id" class=" control-label">分类名称:</label>
+		<label for="category_id" class=" control-label">分类名称:</label>
 		<div class=" controls">
-			<select name="article_class_id">
-				{% for article_class in article_classes %}
-				<option value="{{ article_class.id }}"{% if article_class.id == article.article_class_id %} selected="selected"{% endif %}>{{ article_class.name }}</option>
+			<select name="category_id">
+				{% for category in categories %}
+				<option value="{{ category.id }}"{% if category.id == article.category_id %} selected="selected"{% endif %}>{{ category.title }}</option>
 				{% endfor %}
 			</select>
 		</div>

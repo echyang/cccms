@@ -525,22 +525,24 @@ def content():
 
 @app.route('/article', methods=['GET',])
 @app.route('/article/page/<int:page>', methods=['GET',])
+@app.route('/article/category/<int:category_id>', methods=['GET',])
+@app.route('/article/category/int:category_id>/page/<int:page>', methods=['GET',])
 @login_required
-def article(page=1):	
+def article(page=1, category_id=0):	
 	setting = {'url':'article'}
 	#Search Form
-	search = {'article_class_id':int(request.args.get('article_class_id', '') or '0'), 'title':request.args.get('title', ''),}
-	url_get = '?article_class_id='+str(search['article_class_id'])+'&title='+search['title']
-	article_classes = models.Article_class.query.all()
+	search = {'category_id':int(request.args.get('category_id', '') or '0'), 'title':request.args.get('title', ''),}
+	url_get = '?category_id='+str(search['category_id'])+'&title='+search['title']
+	categories = models.Category.query.all()
 	search_list = []
-	if search['article_class_id'] and int(search['article_class_id']) :
-		search_list.append(models.Article.article_class_id==search['article_class_id'])
+	if search['category_id'] and int(search['category_id']) :
+		search_list.append(models.Article.category_id==search['category_id'])
 	if search['title']:
 		search_list.append(models.Article.title.like('%'+search['title']+'%'))
 	pagination = models.Article.query.filter(*search_list).paginate(page, app.config['PAGINATION'])
 	articles = models.Article.query.filter(*search_list).order_by('create_at DESC').offset((pagination.page-1)*app.config['PAGINATION']).limit(app.config['PAGINATION']).all()
 
-	return render_template('article_list.html', setting=setting, articles=articles, pagination=pagination, article_classes=article_classes, search=search, url_get=url_get)
+	return render_template('article_list.html', setting=setting, articles=articles, pagination=pagination, categories=categories, search=search, url_get=url_get)
 
 
 @app.route('/article/add', methods=['GET', 'POST'])
@@ -557,15 +559,16 @@ def article_add():
 			error['title'] = ['标题已经存在']
 			stat = False
 		if stat:
-			article_class = models.Article_class.query.get(request.form['article_class_id'])
-			article = models.Article(article_class, request.form['title'], request.form['content'], request.form['picture'], request.form['keywords'], request.form['description'], request.form['posi'])
+			category = models.Category.query.get(request.form['category_id'])
+			article = models.Article(category, request.form['title'], request.form['content'], request.form['picture'], request.form['keywords'], request.form['description'], request.form['posi'])
 			db.session.add(article)
 			db.session.commit()
 			flash('添加文章"%s"成功' % request.form['title'])
 			return redirect(url_for('article'))
 		
-	article_classes = models.Article_class.query.all()
-	return render_template('article_add.html', setting=setting, error=error, article_classes=article_classes)
+	data_model = models.Data_model.query.filter_by(code='article').first()
+	categories = models.Category.query.filter_by(data_model_id=data_model.id).all()
+	return render_template('article_add.html', setting=setting, error=error, categories=categories)
 
 
 @app.route('/article/<int:id>')
@@ -591,7 +594,7 @@ def article_edit(id=0):
 			error['title'] = ['标题已经存在']
 			stat = False
 		if stat:
-			article.article_class = models.Article_class.query.get(request.form['article_class_id'])
+			article.category = models.Category.query.get(request.form['category_id'])
 			article.title = request.form['title']
 			article.picture = request.form['picture']
 			article.content = request.form['content']
@@ -603,8 +606,9 @@ def article_edit(id=0):
 			flash('修改文章"%s"成功, <a href="%s">继续修改</a><a href="%s">删除</a>' % (article.title, url_for('article_edit', id=id), url_for('article_delete', id=id)))
 			return redirect(url_for('article'))
 		
-	article_classes = models.Article_class.query.all()
-	return render_template('article_edit.html', setting=setting, error=error, article_classes=article_classes, article=article)
+	data_model = models.Data_model.query.filter_by(code='article').first()
+	categories = models.Category.query.filter_by(data_model_id=data_model.id).all()
+	return render_template('article_edit.html', setting=setting, error=error, categories=categories, article=article)
 
 
 @app.route('/article/delete/<int:id>')
@@ -630,8 +634,10 @@ def article_delete(id):
 
 @app.route('/product')
 @app.route('/product/page/<int:page>')
+@app.route('/product/category/<int:category_id>', methods=['GET',])
+@app.route('/product/category/int:category_id>/page/<int:page>', methods=['GET',])
 @login_required
-def product(page=1):	
+def product(page=1, category_id=0):	
 	setting = {'url':'product'}
 	pagination = models.Product.query.paginate(page, app.config['PAGINATION'])
 	products = models.Product.query.order_by('create_at DESC').offset((pagination.page-1)*app.config['PAGINATION']).limit(app.config['PAGINATION']).all()
@@ -652,15 +658,16 @@ def product_add():
 			error['name'] = ['名称已经存在']
 			stat = False
 		if stat:
-			product_class = models.Product_class.query.get(request.form['product_class_id'])
-			product = models.Product(product_class, request.form['name'], request.form['content'], request.form['picture'], request.form['keywords'], request.form['description'], request.form['posi'])
+			category = models.Category.query.get(request.form['category_id'])
+			product = models.Product(category, request.form['name'], request.form['content'], request.form['picture'], request.form['keywords'], request.form['description'], request.form['posi'])
 			db.session.add(product)
 			db.session.commit()
 			flash('添加产品" %s "成功' % request.form['name'])
 			return redirect(url_for('product'))
 		
-	product_classes = models.Product_class.query.all()
-	return render_template('product_add.html', setting=setting, error=error, product_classes=product_classes)
+	data_model = models.Data_model.query.filter_by(code='product').first()
+	categories = models.Category.query.filter_by(data_model_id=data_model.id).all()
+	return render_template('product_add.html', setting=setting, error=error, categories=categories)
 
 
 @app.route('/product/<int:id>')
@@ -686,7 +693,7 @@ def product_edit(id=0):
 			error['name'] = ['名称已经存在']
 			stat = False
 		if stat:
-			product.product_class = models.Product_class.query.get(request.form['product_class_id'])
+			product.category = models.Category.query.get(request.form['category_id'])
 			product.name = request.form['name']
 			product.picture = request.form['picture']
 			product.content = request.form['content']
@@ -698,8 +705,9 @@ def product_edit(id=0):
 			flash('修改产品" %s "成功' % product.name)
 			return redirect(url_for('product'))
 		
-	product_classes = models.Product_class.query.all()
-	return render_template('product_edit.html', setting=setting, error=error, product_classes=product_classes, product=product)
+	data_model = models.Data_model.query.filter_by(code='product').first()
+	categories = models.Category.query.filter_by(data_model_id=data_model.id).all()
+	return render_template('product_edit.html', setting=setting, error=error, categories=categories, product=product)
 
 
 @app.route('/product/delete/<int:id>')
@@ -712,78 +720,12 @@ def product_delete(id=0):
 	return redirect(url_for('product'))
 
 
-@app.route('/picture_class')
-@login_required
-def picture_class():
-	setting = {'url':'picture_class'}
-	picture_classes = models.Picture_class.query.order_by('create_at ASC').all()
-	return render_template('picture_class_list.html', setting=setting, picture_classes=picture_classes)
-
-
-@app.route('/picture_class/add', methods=['GET', 'POST'])
-@login_required
-def picture_class_add():
-	setting = {'url':'picture_class'}
-	error = {} 
-	if request.method == 'POST':
-		stat = True
-		if not request.form['name']:
-			error['name'] = ['名称不能为空']
-			stat = False
-		elif models.Picture_class.query.filter_by(name=request.form['name']).first():
-			error['name'] = ['名称已经存在']
-			stat = False
-		if stat:
-			picture_class = models.Picture_class(request.form['name'], request.form['keywords'], request.form['description'], request.form['posi'])		
-			db.session.add(picture_class)
-			db.session.commit()
-			flash('添加图库" %s "成功' % request.form['name'])
-			return redirect(url_for('picture_class'))
-		
-	return render_template('picture_class_add.html', setting=setting, error=error)
-
-
-@app.route('/picture_class/edit/<int:id>', methods=['GET', 'POST'])
-@login_required
-def picture_class_edit(id=0):
-	setting = {'url':'picture_class'}
-	error = {} 
-	picture_class = models.Picture_class.query.get_or_404(id)
-	if request.method == 'POST':
-		stat = True
-		if not request.form['name']:
-			error['name'] = ['名称不能为空']
-			stat = False
-		elif models.Picture_class.query.filter(models.Picture_class.id!=id).filter_by(name=request.form['name']).first():
-			error['name'] = ['名称已经存在']
-			stat = False
-		if stat:
-			picture_class.name = request.form['name']
-			picture_class.keywords = request.form['keywords']
-			picture_class.description = request.form['description']
-			picture_class.posi = request.form['posi']
-			picture_class.update_at = datetime.utcnow()
-			db.session.commit()
-			flash('修改图库分类" %s "成功' % request.form['name'])
-			return redirect(url_for('picture_class'))
-		
-	return render_template('picture_class_edit.html', setting=setting, error=error, picture_class=picture_class)
-
-
-@app.route('/picture_class/delete/<int:id>')
-@login_required
-def picture_class_delete(id=0):
-	picture_class = models.Picture_class.query.get_or_404(id)
-	flash('删除图库分类" %s "成功' % picture_class.name)
-	db.session.delete(picture_class)
-	db.session.commit()
-	return redirect(url_for('picture_class'))
-
-
 @app.route('/picture')
 @app.route('/picture/page/<int:page>')
+@app.route('/picture/category/<int:category_id>', methods=['GET',])
+@app.route('/picture/category/int:category_id>/page/<int:page>', methods=['GET',])
 @login_required
-def picture(page=1):	
+def picture(page=1, category_id=0):	
 	setting = {'url':'picture'}
 	pagination = models.Picture.query.paginate(page, app.config['PAGINATION'])
 	pictures = models.Picture.query.order_by('create_at DESC').offset((pagination.page-1)*app.config['PAGINATION']).limit(app.config['PAGINATION']).all()
@@ -804,15 +746,16 @@ def picture_add():
 			error['title'] = ['标题已经存在']
 			stat = False
 		if stat:
-			picture_class = models.Picture_class.query.get(request.form['picture_class_id'])
-			picture = models.Picture(picture_class, request.form['title'], request.form['content'], request.form['picture'], request.form['keywords'], request.form['description'], request.form['posi'])
+			category = models.Category.query.get(request.form['category_id'])
+			picture = models.Picture(category, request.form['title'], request.form['content'], request.form['picture'], request.form['keywords'], request.form['description'], request.form['posi'])
 			db.session.add(picture)
 			db.session.commit()
 			flash('添加图库" %s "成功' % request.form['title'])
 			return redirect(url_for('picture'))
 		
-	picture_classes = models.Picture_class.query.all()
-	return render_template('picture_add.html', setting=setting, error=error, picture_classes=picture_classes)
+	categories = models.Category.query.all()
+	data_model = models.Data_model.query.filter_by(code='article').first()
+	return render_template('picture_add.html', setting=setting, error=error, categories=categories)
 
 
 @app.route('/picture/<int:id>')
@@ -837,7 +780,7 @@ def picture_edit(id=0):
 			error['title'] = ['标题已经存在']
 			stat = False
 		if stat:
-			picture.picture_class = models.Picture_class.query.get(request.form['picture_class_id'])
+			picture.category = models.Category.query.get(request.form['category_id'])
 			picture.title = request.form['title']
 			picture.picture = request.form['picture']
 			picture.content = request.form['content']
@@ -849,8 +792,9 @@ def picture_edit(id=0):
 			flash('修改图库" %s "成功' % picture.title)
 			return redirect(url_for('picture'))
 		
-	picture_classes = models.Picture_class.query.all()
-	return render_template('picture_edit.html', setting=setting, error=error, picture_classes=picture_classes, picture=picture)
+	categories = models.Category.query.all()
+	data_model = models.Data_model.query.filter_by(code='article').first()
+	return render_template('picture_edit.html', setting=setting, error=error, categories=categories, picture=picture)
 
 
 @app.route('/picture/delete/<int:id>')
@@ -877,11 +821,11 @@ def field_value_check():
     check = {
 		'group':['name',],
 		'user':['username', 'email',],
-		'article_class':['name',],
+		'category':['name',],
 		'article':['title',],
-		'product_class':['name',],
+		'category':['name',],
 		'product':['name',],
-		'picture_class':['name',],
+		'category':['name',],
 		'picture':['name',],
 	}	
     print stats['table'] in check

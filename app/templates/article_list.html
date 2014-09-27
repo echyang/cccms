@@ -12,11 +12,11 @@
 <h2>文章<small><a href="{{ url_for(setting.url+'_add') }}">添加文章</a></small></h2>
 
 <form class="form-search" name="{{ setting.url }}" action="{{ url_for(setting.url) }}" method="get">
-	<label for="article_class_id">文章分类:</label>
-	<select name="article_class_id" class="span2">
+	<label for="category_id">文章分类:</label>
+	<select name="category_id" class="span2">
 		<option value="0">未选择</option>
-		{% for article_class in article_classes %}
-		<option value="{{ article_class.id }}"{% if article_class.id == search.article_class_id %} selected="selected"{% endif %}>{{ article_class.name }}</option>
+		{% for category in categories %}
+		<option value="{{ category.id }}"{% if category.id == search.category_id %} selected="selected"{% endif %}>{{ category.title }}</option>
 		{% endfor %}
 	</select>
 	<label for="title">标题:</label>
@@ -41,7 +41,7 @@
 {% for article in articles %}
 <tr>
 <td>{{ article.id }}</td>
-<td>{{ article.article_class.name }}</td>
+<td>{{ article.category.title }}</td>
 <td>{{ article.title }}</td>
 <td>{{ article.create_at }}</td>
 <td>{{ article.update_at }}</td>

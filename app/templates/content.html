@@ -19,7 +19,7 @@
 				{% set level = level-1 %}
 			{% endfor %}
 		{% endif %}
-		<li><a href="/{{ category.data_model.code }}/cid/{{category.id}}">{{ category.title }}</a>
+		<li><a href="/{{ category.data_model.code }}/category/{{category.id}}">{{ category.title }}</a>
 		{% if category.lft+1 < category.rgt %}
 		<ul>
 			{% set level = level+1 %}

@@ -17,11 +17,11 @@
 
 <form class="form-horizontal" name="{{ setting.url }}_add" action="{{ url_for(setting.url+'_add') }}" method="post">
 	<div class="control-group">
-		<label for="product_class_id" class=" control-label">分类名称:</label>
+		<label for="category_id" class=" control-label">分类名称:</label>
 		<div class=" controls">
-			<select name="product_class_id">
-				{% for product_class in product_classes %}
-				<option value="{{ product_class.id }}">{{ product_class.name }}</option>
+			<select name="category_id">
+				{% for category in categories %}
+				<option value="{{ category.id }}">{{ category.title }}</option>
 				{% endfor %}
 			</select>
 		</div>

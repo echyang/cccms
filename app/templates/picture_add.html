@@ -17,11 +17,11 @@
 <h2>图库<small>添加</small></h2>
 <form class="form-horizontal" name="{{ setting.url }}_add" action="{{ url_for(setting.url+'_add') }}" method="post">
 	<div class="control-group">
-		<label for="picture_class_id" class=" control-label">分类名称:</label>
+		<label for="category_id" class=" control-label">分类名称:</label>
 		<div class=" controls">
-			<select name="picture_class_id">
-				{% for picture_class in picture_classes %}
-				<option value="{{ picture_class.id }}">{{ picture_class.name }}</option>
+			<select name="category_id">
+				{% for category in categories %}
+				<option value="{{ category.id }}">{{ category.title }}</option>
 				{% endfor %}
 			</select>
 		</div>
