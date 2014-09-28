@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{%block script %}
+<script type="text/javascript" src="/static/js/ajaxupload.js"></script>
+<script type="text/javascript" src="/static/js/form.js"></script>
+{% endblock %}
+
+{% block content %}
+
+{% if single_page %}
+<ul class="breadcrumb">
+	<li><a href="/">首页</a><span class="divider">/</span></li>
+	<li><a href="{{ url_for(setting.url+'_edit', id= single_page.id) }}">单页</a><span class="divider">/</span></li>
+	<li class="active">修改</li>
+</ul>
+
+{% include('inc/list_msg.html')%}
+
+<h2>{{single_page.category.title}}<small>修改</small></h2>
+
+<form class="form-horizontal" name="{{ setting.url }}_edit" action="{{ url_for(setting.url+'_edit', id=single_page.id) }}" method="post">
+	<input name="id" type="hidden" value="{{ single_page.id }}" />
+	<div class="control-group">
+		<label for="keywords" class=" control-label">关键词:</label>
+		<div class=" controls">
+			<input name="keywords" type="text" value="{{ single_page.keywords }}" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label for="description" class=" control-label">注释:</label>
+		<div class=" controls">
+			<textarea name="description">{{ single_page.description }}</textarea>
+		</div>
+	</div>
+	<div class="control-group">
+		<label for="content" class=" control-label">内容:</label>
+		<div class=" controls">
+			<textarea name="content" class="single_page">{{ single_page.content }}</textarea>
+		</div>
+	</div>
+	<div class="control-group">
+		<div class=" controls">
+			<input name="submit" class="btn btn-primary" type="submit" value="修改" />
+		</div>
+	</div>
+</form>
+{% endif %}
+{% endblock %}

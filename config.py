@@ -5,7 +5,7 @@ CRSF_ENABLED = True
 SECRET_KEY = 'ccc_cms'
 
 #SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
-SQLALCHEMY_DATABASE_URI = 'mysql://root:admin888@localhost/cccms_2'
+SQLALCHEMY_DATABASE_URI = 'mysql://root:admin888@localhost/cccms'
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repostitory')
 
 UPLOAD_IMAGE = ['gif', 'jpg', 'png', 'jpeg', 'bmp']

@@ -288,3 +288,28 @@ class Data_model(db.Model):
 
 	def __repr__(self):
 		return '<Model %r>' % (self.nickname)
+
+
+class Single_page(db.Model):
+	id = db.Column(db.Integer, primary_key = True)
+	keywords = db.Column(db.String(160))
+	description = db.Column(db.String(500))
+	content = db.Column(db.Text)
+	create_at = db.Column(db.DateTime)
+	update_at = db.Column(db.DateTime)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+	category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+	category = db.relationship('Category', backref = db.backref('single_page_category', lazy = 'dynamic', uselist=False))
+
+	def __init__(self, category, content, keywords=None, description=None ):
+		self.content = content 
+		self.category = category 
+		self.keywords = keywords
+		self.description = description
+		self.create_at = datetime.utcnow()
+		self.update_at = datetime.utcnow()
+
+	def __repr__(self):
+		return '<Single Page %r>' % (self.category.title)
+
+

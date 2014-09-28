@@ -1177,4 +1177,34 @@ def member_delete(id=0):
 	return redirect(url_for('member'))
 
 
+@app.route('/single_page/edit/<int:id>', methods=['GET', 'POST'])
+@app.route('/single_page/category/<int:category_id>', methods=['GET', 'POST'])
+@login_required
+def single_page_edit(id=0, category_id=0):
+	setting = {'url':'single_page'}
+	error = {} 
+	if id:
+		single_page = models.Single_page.query.get_or_404(id)
+	if category_id:
+		single_page = models.Single_page.query.filter_by(category_id=category_id).first()
+	if not single_page and category_id:
+		category = models.Category.query.get_or_404(category_id)
+		if category: 
+			single_page = models.Single_page(category, '', '', '')	
+			db.session.add(single_page)
+			db.session.commit()
+	if request.method == 'POST':
+		stat = True
+		if stat:
+			single_page.content = request.form['content']
+			single_page.keywords = request.form['keywords']
+			single_page.description = request.form['description']
+			single_page.update_at = datetime.utcnow()
+			db.session.commit()
+			flash('修改单页"%s"成功' % (single_page.category.title))
+			return redirect(url_for('single_page_edit', category_id=single_page.category_id))
+		
+	return render_template('single_page_edit.html', setting=setting, error=error, single_page=single_page)
+
+
 
