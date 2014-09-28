@@ -5,35 +5,35 @@
 {% endblock %}
 {% block content %}
 <ul class="breadcrumb">
-	<li><a href="/">首页</a><span class="divider">/</span></li>
-	<li><a href="{{ url_for(setting.url) }}">模型</a><span class="divider">/</span></li>
+	<li><a href="/">首页</a></li>
+	<li><a href="{{ url_for(setting.url) }}">模型</a></li>
 	<li class="active">添加</li>
 </ul>
 
 <h2>模型<small>添加</small></h2>
 
 <form class="form-horizontal"  name="{{ setting.url }}_add" action="{{ url_for(setting.url+'_add') }}" method="post">
-	<div class="control-data_model">
-		<label for="name" class=" control-label">名称:</label>
-		<div class=" controls">
-			<input name="name" type="text" value="" />
+	<div class="form-group">
+		<label for="name" class="col-sm-2 control-label">名称:</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="name" type="text" value="" />
 		</div>
 	</div>
-	<div class="control-data_model">
-		<label for="code" class=" control-label">代码:</label>
-		<div class=" controls">
-			<input name="code" type="text" value="" />
+	<div class="form-group">
+		<label for="code" class="col-sm-2 control-label">代码:</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="code" type="text" value="" />
 		</div>
 	</div>
-	<div class="control-data_model">
-		<label for="description" class="c control-label">备注:</label>
-		<div class=" controls">
-			<textarea name="description" rows="3"></textarea>
+	<div class="form-group">
+		<label for="description" class="col-sm-2 control-label">备注:</label>
+		<div class="col-sm-10">
+			<textarea class="form-control" name="description" rows="3"></textarea>
 		</div>
 	</div>
 
-	<div class="control-data_model">
-		<div class=" controls">
+	<div class="form-group">
+		<div class="col-sm-10 col-md-offset-2">
 			<input name="submit" class="btn btn-primary" type="submit" class="btn" value="添加" />
 		</div>
 	</div>

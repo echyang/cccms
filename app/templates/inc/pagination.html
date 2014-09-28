@@ -1,5 +1,4 @@
-<div class="pagination span7">
-	<ul>
+	<ul class="pagination col-sm-7">
 {% if pagination.has_prev %}
 		<li><a href="{{ url_for(setting.url, page=pagination.prev_num) }}{%if url_get %}{{ url_get}}{% endif %}">上一页</a></li>
 {% else %}
@@ -21,5 +20,4 @@
 		<li class="disabled"><a href="#">下一页</a></li>
 {% endif %}
 	</ul>
-</div>
 

@@ -2,8 +2,8 @@
 
 {% block content %}
 <ul class="breadcrumb">
-	<li><a href="/">首页</a><span class="divider">/</span></li>
-	<li><a href="{{ url_for(setting.url) }}">文章</a><span class="divider">/</span></li>
+	<li><a href="/">首页</a></li>
+	<li><a href="{{ url_for(setting.url) }}">文章</a></li>
 	<li class="active">列表</li>
 </ul>
 
@@ -11,20 +11,20 @@
 
 <h2>文章<small><a href="{{ url_for(setting.url+'_add') }}">添加文章</a></small></h2>
 
-<form class="form-search" name="{{ setting.url }}" action="{{ url_for(setting.url) }}" method="get">
+<form class="form-inline" name="{{ setting.url }}" action="{{ url_for(setting.url) }}" method="get">
 	<label for="category_id">文章分类:</label>
-	<select name="category_id" class="span2">
+	<select class="form-control" name="category_id" class="span2">
 		<option value="0">未选择</option>
 		{% for category in categories %}
 		<option value="{{ category.id }}"{% if category.id == search.category_id %} selected="selected"{% endif %}>{{ category.title }}</option>
 		{% endfor %}
 	</select>
 	<label for="title">标题:</label>
-	<input name="title" class="input-small" type="text" value="{{ search.title }}" />
-	<input name="search" class="btn btn-primary" type="submit" value="搜索" />
+	<input class="form-control" name="title" class="input-small" type="text" value="{{ search.title }}" />
+	<input class="form-control" name="search" class="btn btn-primary" type="submit" value="搜索" />
 </form>
 
-<table class="table table-striped table-bordered table-hover">
+<table class="table table-striped table-hover">
 <thead>
 <tr>
 <th>编号</th>
@@ -56,13 +56,14 @@
 
 {% include('inc/pagination.html')%}
 
-<div class="span5 text-right">
-	<input name="import" class="btn" type="button" value="导入" />
-	<input name="export" class="btn" type="button" value="导出" />
-	<input name="select_delete" class="btn" type="button" value="删除" />
-	<input name="select_all" class="btn" type="button" value="全选" />
-	<input name="select_none" class="btn" type="button" value="全不选" />
-	<input name="select_invert" class="btn" type="button" value="反选" />
+<div class="col-sm-5">
+	<div class="pull-right btn-group">
+	<input name="import" class="btn btn-default" type="button" value="导入" />
+	<input name="export" class="btn btn-default" type="button" value="导出" />
+	<input name="select_delete" class="btn btn-default" type="button" value="删除" />
+	<input name="select_all" class="btn btn-default" type="button" value="全选" />
+	<input name="select_none" class="btn btn-default" type="button" value="全不选" />
+	<input name="select_invert" class="btn btn-default" type="button" value="反选" />
 </div>
 
 {% endblock %}

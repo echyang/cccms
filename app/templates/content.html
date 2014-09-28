@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}    
-<div class="span4">
+<div class="sidebar-nav col-sm-3">
 	{% set layer=1 %}
 	{% set i = 0 %}   
 	{% set level = 0 %}
-
 	<ul id="category">
 	{% for category in sidebar_categories %}
 		{% if i and  category.layer <= layer %}
@@ -21,7 +20,7 @@
 		{% endif %}
 		<li><a href="/{{ category.data_model.code }}/category/{{category.id}}">{{ category.title }}</a>
 		{% if category.lft+1 < category.rgt %}
-		<ul>
+		<ul class="collapse in">
 			{% set level = level+1 %}
 		{% endif %}
 
@@ -38,6 +37,11 @@
 	{% endif %}
 
 	</ul>
+	<script type="text/javascript">
+	$(function() {
+		$("#category").metisMenu();
+	});
+	</script>
 </div>
 <div class="span8">
 	测试

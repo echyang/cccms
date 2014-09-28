@@ -2,8 +2,8 @@
 
 {% block content %}
 <ul class="breadcrumb">
-	<li><a href="/">首页</a><span class="divider">/</span></li>
-	<li><a href="{{ url_for(setting.url) }}">产品</a><span class="divider">/</span></li>
+	<li><a href="/">首页</a></li>
+	<li><a href="{{ url_for(setting.url) }}">产品</a></li>
 	<li class="active">列表</li>
 </ul>
 
@@ -11,7 +11,7 @@
 
 <h2>产品 <small><a href="{{ url_for(setting.url+'_add') }}">添加产品</a></small></h2>
 
-<table class="table table-striped table-bordered table-hover">
+<table class="table table-striped table-hover">
 <thead>
 <tr>
 <th>编号</th>
@@ -42,10 +42,14 @@
 
 {% include('inc/pagination.html')%}
 
-<div class="span4 text-right">
-	<input name="import" class="btn" type="button" value="导入" />
-	<input name="export" class="btn" type="button" value="导出" />
-	<input name="delete" class="btn" type="button" value="删除" />
+<div class="col-sm-5">
+	<div class="pull-right btn-group">
+	<input name="import" class="btn btn-default" type="button" value="导入" />
+	<input name="export" class="btn btn-default" type="button" value="导出" />
+	<input name="select_delete" class="btn btn-default" type="button" value="删除" />
+	<input name="select_all" class="btn btn-default" type="button" value="全选" />
+	<input name="select_none" class="btn btn-default" type="button" value="全不选" />
+	<input name="select_invert" class="btn btn-default" type="button" value="反选" />
 </div>
 
 {% endblock %}

@@ -1,6 +1,6 @@
 {% with msgs= get_flashed_messages() %}
 {% if msgs %}
-<div class="alert">
+<div class="alert alert-warning alert-dismissible">
 	<button type="button" class="close" data-dismiss="alert">&times;</button>
 	<strong>操作成功</strong>
 {% for msg in msgs %}

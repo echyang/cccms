@@ -8,63 +8,67 @@
 {% block content %}
 
 <ul class="breadcrumb">
-	<li><a href="/">首页</a><span class="divider">/</span></li>
-	<li><a href="{{ url_for(setting.url) }}">文章</a><span class="divider">/</span></li>
+	<li><a href="/">首页</a></li>
+	<li><a href="{{ url_for(setting.url) }}">文章</a></li>
 	<li class="active">添加</li>
 </ul>
 
 <h2>文章<small>添加</small></h2>
 
 <form class="form-horizontal" name="{{ setting.url }}_add" action="{{ url_for('article_add') }}" method="post">
-	<div class="control-group">
-		<label for="category_id" class="control-label"><em>*</em>分类名称:</label>
-		<div class="controls">
-			<select name="category_id">
+	<div class="form-group">
+		<label for="category_id" class="col-sm-2 control-label"><em>*</em>分类名称:</label>
+		<div class="col-sm-10">
+			<select class="form-control" name="category_id">
 				{% for category in categories %}
 				<option value="{{ category.id }}">{{ category.title }}</option>
 				{% endfor %}
 			</select>
 		</div>
 	</div>
-	<div class="control-group">
-		<label for="title" class=" control-label"><em>*</em>标题:</label>
-		<div class=" controls">
-			<input name="title" type="text" value="" />
+	<div class="form-group">
+		<label for="title" class="col-sm-2 control-label"><em>*</em>标题:</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="title" type="text" value="" />
 		</div>
 	</div>
-	<div class="control-group">
-		<label for="keywords" class=" control-label">关键词:</label>
-		<div class=" controls">
-			<input name="keywords" type="text" value="" />
+	<div class="form-group">
+		<label for="keywords" class="col-sm-2 control-label">关键词:</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="keywords" type="text" value="" />
 		</div>
 	</div>
-	<div class="control-group">
-		<label for="description" class=" control-label">注释:</label>
-		<div class=" controls">
-			<textarea name="description"></textarea>
+	<div class="form-group">
+		<label for="description" class="col-sm-2 control-label">注释:</label>
+		<div class="col-sm-10">
+			<textarea class="form-control" name="description"></textarea>
 		</div>
 	</div>
-	<div class="control-group">
-		<label for="posi" class=" control-label">排序:</label>
-		<div class=" controls">
-			<input name="posi" class="span1" type="text" value="100" />
+	<div class="form-group">
+		<label for="posi" class="col-sm-2 control-label">排序:</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="posi" class="span1" type="text" value="100" />
 		</div>
 	</div>
-	<div class="control-group">
-		<label for="picture" class=" control-label">图片:</label>
-		<div class=" controls">
-			<input name="picture" type="text" value="" />
-			<input id="img_upload" name="img_upload" class="btn" type="button" value="浏览" />
+	<div class="form-group">
+		<label for="picture" class="col-sm-2 control-label">图片:</label>
+		<div class="col-sm-10">
+			<div class="input-group">
+				<input class="form-control" name="picture" type="text" value="" />
+				<span class="input-group-btn">	
+					<button class="btn btn-default" id="img_upload" name="img_upload">浏览</button>
+				</span>
+			</div>
 		</div>
 	</div>
-	<div class="control-group">
-		<label for="content" class=" control-label"><em>*</em>内容:</label>
-		<div class=" controls">
-			<textarea name="content" class="article"></textarea>
+	<div class="form-group">
+		<label for="content" class="col-sm-2 control-label"><em>*</em>内容:</label>
+		<div class="col-sm-10">
+			<textarea class="form-control article" name="content"></textarea>
 		</div>
 	</div>
-	<div class="control-group">
-		<div class=" controls">
+	<div class="form-group">
+		<div class="col-sm-10 col-md-offset-2">
 			<input name="submit" class="btn btn-primary" type="submit" value="添加"" />
 		</div>
 	</div>

@@ -353,7 +353,7 @@ def config():
 		config.icp = request.form['icp']
 		config.update_at = datetime.utcnow()
 		db.session.commit()
-		flash('修改 "%s" 网站设置成功' % request.form['sitename'])
+		flash('修改"站点设置"成功')
 		return redirect(url_for('config'))
 	return render_template('config.html', config=config, error=error)
 

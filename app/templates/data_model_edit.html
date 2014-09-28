@@ -7,36 +7,36 @@
 
 {% block content %}
 <ul class="breadcrumb">
-	<li><a href="/">首页</a><span class="divider">/</span></li>
-	<li><a href="{{ url_for(setting.url) }}">模型</a><span class="divider">/</span></li>
+	<li><a href="/">首页</a></li>
+	<li><a href="{{ url_for(setting.url) }}">模型</a></li>
 	<li class="active">修改</li>
 </ul>
 
 <h2>模型<small>修改</small></h2>
 
 <form class="form-horizontal"  name="{{ setting.url }}_edit" action="{{ url_for(setting.url+'_edit', id=data_model.id) }}" method="post">
-	<input name="id" type="hidden" value="{{ data_model.id }}" />
-<div class="control-data_model">
-	<label for="name" class=" control-label">名称:</label>
-	<div class=" controls">
-		<input name="name" type="text" value="{{data_model.name}}" />
+	<input class="form-control" name="id" type="hidden" value="{{ data_model.id }}" />
+<div class="form-group">
+	<label for="name" class="col-sm-2 control-label">名称:</label>
+	<div class="col-sm-10">
+		<input class="form-control" name="name" type="text" value="{{data_model.name}}" />
 	</div>
 </div>
-<div class="control-data_model">
-	<label for="code" class=" control-label">代码:</label>
-	<div class=" controls">
-		<input name="code" type="text" value="{{data_model.code}}" />
+<div class="form-group">
+	<label for="code" class="col-sm-2 control-label">代码:</label>
+	<div class="col-sm-10">
+		<input class="form-control" name="code" type="text" value="{{data_model.code}}" />
 	</div>
 </div>
-<div class="control-data_model">
-	<label for="description" class="c control-label">备注:</label>
-	<div class=" controls">
-		<textarea name="description" rows="3">{{ data_model.description }}</textarea>
+<div class="form-group">
+	<label for="description" class="col-sm-2 control-label">备注:</label>
+	<div class="col-sm-10">
+		<textarea class="form-control" name="description" rows="3">{{ data_model.description }}</textarea>
 	</div>
 </div>
 
-<div class="control-data_model">
-	<div class=" controls">
+<div class="form-group">
+	<div class="col-sm-10 col-md-offset-2">
 		<button name="submit" class="btn btn-primary" type="submit" class="btn">修改</button>
 	</div>
 </div>

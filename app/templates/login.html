@@ -2,7 +2,7 @@
 {% block content %}
 
 <ul class="breadcrumb">
-	<li><a href="/">首页</a><span class="divider">/</span></li>
+	<li><a href="/">首页</a></li>
 	<li class="active">用户登录</li>
 </ul>
 
@@ -20,20 +20,20 @@
 <h2>登录</h2>
 
 <form class="form-horizontal" name="login" action="{{ url_for('login') }}" method="post">
-	<div class="control-group">
-		<label for="username" class=" control-label">用户名:</label>
-		<div class=" controls">
-			<input name="username" type="text" value="" />
+	<div class="form-group">
+		<label for="username" class="col-sm-2 control-label">用户名:</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="username" type="text" value="" />
 		</div>
 	</div>
-	<div class="control-group">
-		<label for="password" class=" control-label">密码:</label>
-		<div class=" controls">
-			<input name="password" type="password" value="" />
+	<div class="form-group">
+		<label for="password" class="col-sm-2 control-label">密码:</label>
+		<div class="col-sm-10">
+			<input class="form-control" name="password" type="password" value="" />
 		</div>
 	</div>
-	<div class="control-group">
-		<div class=" controls">
+	<div class="form-group">
+		<div class="col-sm-10">
 			<input name="submit" type="submit" value="登录" />
 		</div>
 	</div>

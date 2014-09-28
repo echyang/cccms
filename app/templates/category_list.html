@@ -2,8 +2,8 @@
 {% block content %}
 
 <ul class="breadcrumb">
-	<li><a href="/">首页</a><span class="divider">/</span></li>
-	<li><a href="{{ url_for(setting.url) }}">分类</a><span class="divider">/</span></li>
+	<li><a href="/">首页</a></li>
+	<li><a href="{{ url_for(setting.url) }}">分类</a></li>
 	<li class="active">列表</li>
 </ul>
 
@@ -11,7 +11,7 @@
 
 <h2>分类<small><a href="{{ url_for(setting.url+'_add') }}">添加</a></small></h2>
 
-<table class="table table-striped table-bordered table-hover">
+<table class="table table-striped table-hover">
 <thead>
 <tr>
 <th>编号</th>
@@ -28,7 +28,7 @@
 <tr>
 <td>{{ category.id }}</td>
 <td>{{ category.data_model.name }}</td>
-<td>{{ category.layer-1 and ' '*(category.layer-1)+'|_ ' or ''}}{{ category.title }}</td>
+<td>{{ (category.layer-1 and '|'+'&nbsp;'*4*(category.layer-1)+'|_ ' or '')|safe }}{{ category.title }}</td>
 <td>{{ category.create_at }}</td>
 <td>{{ category.update_at }}</td>
 <td><a href="{{ url_for(setting.url+'_edit', id=category.id) }}">修改</a></td>
