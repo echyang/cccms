@@ -22,7 +22,7 @@
 		<div class="col-sm-10">
 			<select class="form-control" name="parent_id">
 				{% for p_category in categories %}
-				<option value="{{ p_category.id }}">{{ (p_category.layer-1>0 and '|'+'&nbsp;'*4*(p_category.layer-1)+'|_ ' or '')|safe }}{{ p_category.title}}</option>
+				<option value="{{ p_category.id }}">{{ p_category.layer and '|'+'&nbsp;'*(p_category.layer)+' ' or '') }}{{ p_category.title}}</option>
 				{% endfor %}
 			</select>
 		</div>
