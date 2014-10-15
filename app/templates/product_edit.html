@@ -13,6 +13,13 @@
 	<li class="active">修改</li>
 </ul>
 
+
+
+<div class="row">
+{% include('inc/sidebar_categories.html')%}
+
+<div class="col-sm-10">
+
 <h1>产品<small>修改</small></h1>
 <form class="form-horizontal" name="{{ setting.url }}" action="{{ url_for(setting.url+'_edit', id=product.id) }}" method="post">
 	<input class="form-control" name="id" type="hidden" value="{{ product.id }}" />
@@ -73,4 +80,7 @@
 		</div>
 	</div>
 </form>
+
+</div>
+</div>
 {% endblock %}

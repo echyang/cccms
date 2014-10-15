@@ -7,6 +7,13 @@
 	<li class="active">列表</li>
 </ul>
 
+	
+
+<div class="row">
+{% include('inc/sidebar_categories.html')%}
+
+<div class="col-sm-10">
+
 {% include('inc/list_msg.html')%}
 
 <h2>图库<small><a href="{{ url_for(setting.url+'_add') }}">添加</a></small></h2>
@@ -50,4 +57,6 @@
 	<input name="select_invert" class="btn btn-default" type="button" value="反选" />
 </div>
 
+</div>
+</div>
 {% endblock %}

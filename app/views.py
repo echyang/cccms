@@ -42,6 +42,9 @@ def category_common(f):
 	return decorated_function
 
 
+def get_categories():
+	return models.Category.query.filter(models.Category.layer>0).order_by('lft ASC ').all()
+
 
 @app.route('/')
 @app.route('/index')
@@ -519,9 +522,9 @@ def category_delete(id=0):
 
 @app.route('/admin/content')
 def content():
-	categories = models.Category.query.filter(models.Category.layer>0).order_by('lft ASC ').all()
-	return render_template('content.html', sidebar_categories=categories)
-
+	setting = {}
+	setting['categories'] = get_categories()	
+	return render_template('content.html', setting=setting)
 
 @app.route('/article', methods=['GET',])
 @app.route('/article/page/<int:page>', methods=['GET',])
@@ -530,6 +533,7 @@ def content():
 @login_required
 def article(page=1, category_id=0):	
 	setting = {'url':'article'}
+	setting['categories'] = get_categories()	
 	#Search Form
 	search = {'category_id':int(request.args.get('category_id', '') or '0'), 'title':request.args.get('title', ''),}
 	url_get = '?category_id='+str(search['category_id'])+'&title='+search['title']
@@ -542,6 +546,7 @@ def article(page=1, category_id=0):
 	pagination = models.Article.query.filter(*search_list).paginate(page, app.config['PAGINATION'])
 	articles = models.Article.query.filter(*search_list).order_by('create_at DESC').offset((pagination.page-1)*app.config['PAGINATION']).limit(app.config['PAGINATION']).all()
 
+	setting['categories'] = get_categories()
 	return render_template('article_list.html', setting=setting, articles=articles, pagination=pagination, categories=categories, search=search, url_get=url_get)
 
 
@@ -549,6 +554,7 @@ def article(page=1, category_id=0):
 @login_required
 def article_add():
 	setting = {'url':'article'}
+	setting['categories'] = get_categories()	
 	error = {} 
 	if request.method == 'POST':
 		stat = True
@@ -575,6 +581,7 @@ def article_add():
 @login_required
 def article_detail(id=0):
 	setting = {'url':'article'}
+	setting['categories'] = get_categories()	
 	article = models.Article.query.get(id)
 	return render_template('article_detail.html', setting=setting, article=article)
 
@@ -583,6 +590,7 @@ def article_detail(id=0):
 @login_required
 def article_edit(id=0):
 	setting = {'url':'article'}
+	setting['categories'] = get_categories()	
 	error = {} 
 	article = models.Article.query.get_or_404(id)
 	if request.method == 'POST':
@@ -639,6 +647,7 @@ def article_delete(id):
 @login_required
 def product(page=1, category_id=0):	
 	setting = {'url':'product'}
+	setting['categories'] = get_categories()	
 	pagination = models.Product.query.paginate(page, app.config['PAGINATION'])
 	products = models.Product.query.order_by('create_at DESC').offset((pagination.page-1)*app.config['PAGINATION']).limit(app.config['PAGINATION']).all()
 	return render_template('product_list.html', setting=setting, products=products, pagination=pagination)
@@ -648,6 +657,7 @@ def product(page=1, category_id=0):
 @login_required
 def product_add():
 	setting = {'url':'product'}
+	setting['categories'] = get_categories()	
 	error = {} 
 	if request.method == 'POST':
 		stat = True
@@ -674,6 +684,7 @@ def product_add():
 @login_required
 def product_detail(id=0):
 	setting = {'url':'product'}
+	setting['categories'] = get_categories()	
 	product = models.Product.query.get_or_404(id)
 	return render_template('product_detail.html', setting=setting, product=product)
 
@@ -682,6 +693,7 @@ def product_detail(id=0):
 @login_required
 def product_edit(id=0):
 	setting = {'url':'product'}
+	setting['categories'] = get_categories()	
 	error = {} 
 	product = models.Product.query.get_or_404(id)
 	if request.method == 'POST':
@@ -727,6 +739,7 @@ def product_delete(id=0):
 @login_required
 def picture(page=1, category_id=0):	
 	setting = {'url':'picture'}
+	setting['categories'] = get_categories()	
 	pagination = models.Picture.query.paginate(page, app.config['PAGINATION'])
 	pictures = models.Picture.query.order_by('create_at DESC').offset((pagination.page-1)*app.config['PAGINATION']).limit(app.config['PAGINATION']).all()
 	return render_template('picture_list.html', setting=setting, pictures=pictures, pagination=pagination)
@@ -736,6 +749,7 @@ def picture(page=1, category_id=0):
 @login_required
 def picture_add():
 	setting = {'url':'picture'}
+	setting['categories'] = get_categories()	
 	error = {} 
 	if request.method == 'POST':
 		stat = True
@@ -762,6 +776,7 @@ def picture_add():
 @login_required
 def picture_detail(id=0):
 	picture = models.Picture.query.get(id)
+	setting['categories'] = get_categories()	
 	return render_template('picture_detail.html', setting=setting, picture=picture)
 
 
@@ -769,6 +784,7 @@ def picture_detail(id=0):
 @login_required
 def picture_edit(id=0):
 	setting = {'url':'picture'}
+	setting['categories'] = get_categories()	
 	error = {} 
 	picture = models.Picture.query.get_or_404(id)
 	if request.method == 'POST':

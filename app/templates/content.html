@@ -1,49 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}    
-<div class="sidebar-nav col-sm-3">
-	{% set layer=1 %}
-	{% set i = 0 %}   
-	{% set level = 0 %}
-	<ul id="category">
-	{% for category in sidebar_categories %}
-		{% if i and  category.layer <= layer %}
-		</li>
-		{% endif %}
-		
-		{% if category.layer < layer %}
-			{% for j in range(layer-category.layer) %}
-					</li>
-				</ul>
-				{% set level = level-1 %}
-			{% endfor %}
-		{% endif %}
-		<li><a href="/{{ category.data_model.code }}/category/{{category.id}}">{{ category.title }}</a>
-		{% if category.lft+1 < category.rgt %}
-		<ul class="collapse in">
-			{% set level = level+1 %}
-		{% endif %}
+	
 
-		{% set layer = category.layer %}
-		{% set i=i+1 %}
-	{% endfor %}
+<div class="row">
+{% include('inc/sidebar_categories.html')%}
 
-
-	{% if level %}
-		{% for j in range(level) %}
-			</li>
-		</ul>
-		{% endfor %}
-	{% endif %}
-
-	</ul>
-	<script type="text/javascript">
-	$(function() {
-		$("#category").metisMenu();
-	});
-	</script>
+<div class="col-sm-10">
+	<div class="alert alert-info"><strong>提示</strong>从左侧选择要管理内容的栏目</div>
 </div>
-<div class="span8">
-	测试
+
 </div>
 {% endblock %}

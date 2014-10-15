@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
+
+
+<div class="row">
+{% include('inc/sidebar_categories.html')%}
+
+<div class="col-sm-10">
+
 <h2>产品<small>查看</small></h2>
 	<ul>
 		<li>
@@ -33,4 +40,7 @@
 			<span class="error"></span>
 		</li>
 	</ul>
+
+</div>
+</div>
 {% endblock %}
